@@ -1,8 +1,6 @@
 <?php
 
 use AutoReply\Lib;
-use AutoReply\Provider\Router;
-
 
 $config_file = json_decode(file_get_contents(__DIR__."/../../config.json"), true);
 
@@ -19,11 +17,5 @@ if ( DEBUG ) {
     ini_set('display_startup_errors', 0);
 }
 
-define("MESSAGE_PATH", __DIR__ . '/resource/msg');
-
-
-if ( !Lib::is_installed() && Router::segment(3) !== 'install.php' ) {
-//    exit('Need to install! <a href="/src/Public/install.php">Install</a>');
-}
-
+define("MESSAGE_PATH", __DIR__ .'/../../resource/msg');
 require __DIR__ . '/Router.php';

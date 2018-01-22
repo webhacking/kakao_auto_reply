@@ -1,12 +1,12 @@
 <?php
 
-namespace AutoReply\Provider;
+namespace AutoReply\Provider\Routing;
 
 /**
- * Class Router
+ * Class Routing
  * @package AutoReply\Provider
  */
-class Router
+abstract class Router
 {
     /**
      * @param $num

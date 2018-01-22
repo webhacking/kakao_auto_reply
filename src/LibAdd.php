@@ -1,11 +1,4 @@
 <?php
-/**
- * auto_reply
- *
- * @author Jang Joonho <jhjang1005@naver.com>
- * @copyright 2016 Jang Joonho
- * @license GPLv3
- */
 
 /**
  * Execute before send message.

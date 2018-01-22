@@ -1,20 +1,14 @@
 <?php
-/**
- * auto_reply
- *
- * @author Jang Joonho <jhjang1005@naver.com>
- * @copyright 2016 Jang Joonho
- * @license GPLv3
- */
 
 namespace AutoReply;
-
-include_once __DIR__ . '/config.php';
-include_once __DIR__ . '/lib.add.php';
 
 use AutoReply\Provider\Keyboard;
 use AutoReply\Provider\Message;
 
+/**
+ * Class Lib
+ * @package AutoReply
+ */
 class Lib
 {
     /**
@@ -43,7 +37,7 @@ class Lib
      */
     public static function ip_check()
     {
-        if (!IP_CHECK) {
+        if ( !IP_CHECK ) {
             return TRUE;
         }
 
@@ -51,11 +45,7 @@ class Lib
         $allowed_ips = array("110.76.143.234", "110.76.143.235", "110.76.143.236");
         $ip = $_SERVER['REMOTE_ADDR'];
 
-        if ( in_array($ip, $allowed_ips) ) {
-            return TRUE;
-        }
-
-        return isset($_SERVER['HTTP_X_REQUESTED_WITH']);
+        return ( in_array($ip, $allowed_ips) ) ? false : true;
     }
 
     /**
