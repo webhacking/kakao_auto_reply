@@ -8,12 +8,6 @@ namespace AutoReply\Provider;
  */
 class Router
 {
-    public static function current()
-    {
-        return $_SERVER['REQUEST_URI'];
-    }
-
-
     /**
      * @param $num
      * @return mixed

@@ -18,7 +18,7 @@ define("FAILED_CODE", 400);
  * @package kakao
  * @author JJH
  */
-abstract class BaseClass
+abstract class Base
 {
     /**
      * Return array version.

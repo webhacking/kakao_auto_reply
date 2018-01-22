@@ -23,9 +23,8 @@ if ( DEBUG ) {
 
 define("MESSAGE_PATH", __DIR__ . '/resource/msg');
 
-use kakao\Keyboard;
-use kakao\Msg;
-use kakao\Msg\Message;
+use AutoReply\Provider\Keyboard;
+use AutoReply\Provider\Message;
 
 class Lib
 {
@@ -50,12 +49,15 @@ class Lib
         if (!IP_CHECK) {
             return TRUE;
         }
+
         // check it https://github.com/plusfriend/auto_reply#71-proxy-server-information
         $allowed_ips = array("110.76.143.234", "110.76.143.235", "110.76.143.236");
         $ip = $_SERVER['REMOTE_ADDR'];
-        if (in_array($ip, $allowed_ips)) {
+
+        if ( in_array($ip, $allowed_ips) ) {
             return TRUE;
         }
+
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']);
     }
 
@@ -67,7 +69,7 @@ class Lib
      */
     public static function show_error($err_no, $message)
     {
-        switch ($err_no) {
+        switch ( $err_no ) {
             case 400:
                 header("HTTP/1.1 400 Bad request");
                 break;
@@ -81,6 +83,7 @@ class Lib
                 header("HTTP/1.1 200 OK");
                 break;
         }
+
         exit($message);
     }
 
@@ -123,7 +126,7 @@ class Lib
      * @param string $content button
      * @param Msg $msg showed message
      */
-    public static function write_msg_file($content, \kakao\Msg $msg)
+    public static function write_msg_file($content, Message $msg)
     {
         $f = fopen(get_message_file($content), "w");
         fwrite($f, "<?php\n// content : {$content}\nuse \\kakao\\Msg;\nuse \\kakao\\Msg\\Message;\nuse \\kakao\\Keyboard;");
@@ -223,14 +226,15 @@ class Lib
         }
 
         $msg_button = NULL;
-        if (isset($_POST['url_path'])) {
+        if ( isset($_POST['url_path']) ) {
             $msg_button = array($_POST['url_msg'], $_POST['url_path']);
         }
         $msg = new Msg(new Message($_POST['message'], $photo, $msg_button), $keyboard);
 
-        if (!$msg->is_valid())
+        if ( !$msg->is_valid() ) {
             show_error(400, $msg->get_invalid_msg());
-        // write file.
+        }
+
         write_msg_file($_POST['content'], $msg);
 
         return get_message_filename($_POST['content']);
@@ -246,10 +250,12 @@ class Lib
     public static function file_download($filename, $path = MESSAGE_PATH)
     {
         // checking file existence.
-        if (!file_exists($path . "/" . $filename))
+        if ( !file_exists($path . "/" . $filename) ) {
             return FALSE;
+        }
+
         // checking valid input or not.
-        if (!preg_match('/^[a-zA-Z0-9_]+\.[a-zA-Z0-9]+$/', $filename)) {
+        if ( !preg_match('/^[a-zA-Z0-9_]+\.[a-zA-Z0-9]+$/', $filename) ) {
             return FALSE;
         }
 
@@ -273,7 +279,7 @@ class Lib
      */
     public static function is_session_start()
     {
-        if (php_sapi_name() !== 'cli') {
+        if ( php_sapi_name() !== 'cli' ) {
             if (version_compare(phpversion(), '5.4.0', '>=') ) {
                 return session_status() === PHP_SESSION_ACTIVE ? TRUE : FALSE;
             } else {

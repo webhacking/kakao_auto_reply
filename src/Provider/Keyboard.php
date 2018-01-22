@@ -1,15 +1,8 @@
 <?php
-/**
- * auto_reply
- *
- * @author Jang Joonho <jhjang1005@naver.com>
- * @copyright 2016 Jang Joonho
- * @license GPLv3
- */
 
-namespace AutoReply\Keybord;
+namespace AutoReply\Provider;
 
-use AutoReply\BaseClass;
+use AutoReply\Base;
 
 /**
  * Keyboard Provider.
@@ -18,7 +11,7 @@ use AutoReply\BaseClass;
  * @package kakao
  * @author JJH
  */
-class Keyboard extends BaseClass
+class Keyboard extends Base
 {
     /**
      * Keyboard type
@@ -26,6 +19,7 @@ class Keyboard extends BaseClass
      * @var string
      */
     private $type = "buttons";
+
     /**
      * Objective responses list
      *
@@ -42,15 +36,16 @@ class Keyboard extends BaseClass
      */
     public function __construct($button = NULL)
     {
-        if (is_string($button))
+        if ( is_string($button) ) {
             $this->buttons = array($button);
-        elseif (is_array($button))
+        } elseif ( is_array($button) ) {
             $this->buttons = $button;
-        elseif (is_null($button)) {
+        } elseif (is_null($button)) {
             $this->type = "text";
             $this->buttons = "";
-        } else
+        } else {
             $this->buttons = NULL;
+        }
         $this->invalid_msg = "Invalid Keyboard format.";
     }
 
@@ -95,7 +90,7 @@ class Keyboard extends BaseClass
      */
     public function get_argument($tab_size = 0)
     {
-        $eol = end_line($tab_size);
+        $eol = Lib::end_line($tab_size);
         $result = $eol;
         if (is_array($this->buttons))
             $result .= '"' . implode('",' . $eol . '"', array_map('addslashes', $this->buttons)) . '"';
@@ -110,14 +105,14 @@ class Keyboard extends BaseClass
      */
     public function get_class($tab_size = 0)
     {
-        $result = end_line($tab_size) . "new Keyboard(";
+        $result = Lib::end_line($tab_size) . "new Keyboard(";
         if (is_array($this->buttons)) {
-            $result .= end_line($tab_size + 1) . "array(" . $this->get_argument($tab_size + 2);
-            $result .= end_line($tab_size + 1) . ")";
+            $result .= Lib::end_line($tab_size + 1) . "array(" . $this->get_argument($tab_size + 2);
+            $result .= Lib::end_line($tab_size + 1) . ")";
         } else {
-            $result .= end_line($tab_size + 1) . "NULL";
+            $result .= Lib::end_line($tab_size + 1) . "NULL";
         }
-        $result .= end_line($tab_size) . ")";
+        $result .= Lib::end_line($tab_size) . ")";
         return $result;
     }
 }
