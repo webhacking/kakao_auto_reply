@@ -12,17 +12,6 @@ namespace AutoReply;
 include_once __DIR__ . '/config.php';
 include_once __DIR__ . '/lib.add.php';
 
-if ( DEBUG ) {
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-} else {
-    ini_set('display_errors', 0);
-    ini_set('display_startup_errors', 0);
-}
-
-define("MESSAGE_PATH", __DIR__ . '/resource/msg');
-
 use AutoReply\Provider\Keyboard;
 use AutoReply\Provider\Message;
 
@@ -37,6 +26,14 @@ class Lib
     {
         global $DEFAULT_KEYBOARD, $ADMIN_INFO;
         return ( is_null($DEFAULT_KEYBOARD) || is_null($ADMIN_INFO) ) ? false : true;
+    }
+
+    /**
+     * @param $path
+     */
+    public static function view($path)
+    {
+        require __DIR__.'/View/'.str_replace('.php', '', $path).'.php';
     }
 
     /**

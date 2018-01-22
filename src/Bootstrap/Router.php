@@ -10,23 +10,24 @@
 use AutoReply\Lib;
 use AutoReply\Keybord;
 use AutoReply\Message;
+use AutoReply\Message\Packet;
 
-use kakao\Msg\Mesasge;
 
 $uri = isset($_GET['id']) ? $_GET['id'] : '';
 $uri = explode('/', $uri);
 $method = $_SERVER['REQUEST_METHOD'];
 
 
-if ($uri[0] == '') {
-    header("Location: ".BASE_URL."login.php");
-    return;
+if ( $uri[0] == '' ) {
+    Lib::view('login');
 }
 
-if (!Lib::ip_check())
-    show_error(403, "Not allowed ip!!");
+if ( !Lib::ip_check() ) {
+    Lib::show_error(403, "Not allowed ip!!");
+}
 
-switch ($uri[0]) {
+exit;
+switch ( $uri[0] ) {
     case "keyboard":
         if ($method !== "GET")
             exit("INVALID METHOD");
