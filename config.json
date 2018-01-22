@@ -1,0 +1,5 @@
+{
+  "base_url" : "localhost/",
+  "ip_check" : true,
+  "debug" : true
+}

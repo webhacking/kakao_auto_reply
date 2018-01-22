@@ -1,0 +1,12 @@
+{
+    "name": "hax0r/kakao_auto_reply",
+    "require": {},
+    "autoload": {
+        "psr-4" : {
+            "AutoReply\\" : "src"
+        },
+        "files": [
+            "src/Bootstrap/Initialize.php"
+        ]
+    }
+}

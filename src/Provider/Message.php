@@ -7,122 +7,119 @@
  * @license GPLv3
  */
 
-namespace {
-    include_once __DIR__ . '/BaseClass.php';
-}
+namespace AutoReply\Message;
 
-namespace kakao {
+use AutoReply\BaseClass;
+
+/**
+ * Msg Provider.
+ * This Provider is for showing response about /message
+ *
+ * @package kakao
+ * @author JJH
+ */
+class Message extends BaseClass
+{
     /**
-     * Msg class.
-     * This class is for showing response about /message
-     *
-     * @package kakao
-     * @author JJH
+     * @var Msg\Message
      */
-    class Msg extends BaseClass
+    private $message;
+
+    /**
+     * Keyboard type
+     *
+     * @var Keyboard
+     */
+    private $keyboard;
+    /**
+     * Is default keyboard or not.
+     *
+     * @var bool
+     */
+    private $use_default_keyboard = FALSE;
+
+    /**
+     * Constructor for Msg Provider.
+     *
+     * keyboard : null -> Subjective.
+     * keyboard : TRUE -> Use default keyboard.
+     * keyboard : array -> Use keyboard elements.
+     *
+     * @param Msg\Message $message
+     * @param mixed $keyboard
+     */
+    public function __construct(Msg\Message $message, $keyboard = NULL)
     {
-        /**
-         * Message type
-         *
-         * @var Msg\Message
-         */
-        private $message;
-        /**
-         * Keyboard type
-         *
-         * @var Keyboard
-         */
-        private $keyboard;
-        /**
-         * Is default keyboard or not.
-         *
-         * @var bool
-         */
-        private $use_default_keyboard = FALSE;
-
-        /**
-         * Constructor for Msg class.
-         *
-         * keyboard : null -> Subjective.
-         * keyboard : TRUE -> Use default keyboard.
-         * keyboard : array -> Use keyboard elements.
-         *
-         * @param Msg\Message $message
-         * @param mixed $keyboard
-         */
-        public function __construct(Msg\Message $message, $keyboard = NULL)
-        {
-            $this->message = $message;
-            if ($keyboard !== TRUE)
-                $this->keyboard = $keyboard;
-            else {
-                include_once __DIR__ . '/../config.php';
-                include_once __DIR__ . '/Keyboard.php';
-                $this->keyboard = new Keyboard($GLOBALS['DEFAULT_KEYBOARD']);
-                $this->use_default_keyboard = TRUE;
-            }
+        $this->message = $message;
+        if ($keyboard !== TRUE)
+            $this->keyboard = $keyboard;
+        else {
+            include_once __DIR__ . '/../config.php';
+            include_once __DIR__ . '/Keyboard.php';
+            $this->keyboard = new Keyboard($GLOBALS['DEFAULT_KEYBOARD']);
+            $this->use_default_keyboard = TRUE;
         }
+    }
 
-        /**
-         * Check that it is valid or not.
-         *
-         * @return bool
-         */
-        public function is_valid()
-        {
-            if (!$this->message->is_valid()) {
-                $this->invalid_msg = $this->message->invalid_msg;
-                return FALSE;
-            }
-            if (isset($this->keyboard) && !$this->keyboard->is_valid()) {
-                $this->invalid_msg = $this->keyboard->invalid_msg;
-                return FALSE;
-            }
-            return TRUE;
+    /**
+     * Check that it is valid or not.
+     *
+     * @return bool
+     */
+    public function is_valid()
+    {
+        if (!$this->message->is_valid()) {
+            $this->invalid_msg = $this->message->invalid_msg;
+            return FALSE;
         }
-
-        /**
-         * Return array version.
-         *
-         * @return array
-         */
-        public function toArray()
-        {
-            $result['message'] = $this->message->toArray();
-            if (isset($this->keyboard) && $this->keyboard->is_objective())
-                $result['keyboard'] = $this->keyboard->toArray();
-            return $result;
+        if (isset($this->keyboard) && !$this->keyboard->is_valid()) {
+            $this->invalid_msg = $this->keyboard->invalid_msg;
+            return FALSE;
         }
+        return TRUE;
+    }
 
-        /**
-         * Return the all arguments with formatting.
-         *
-         * @param int $tab_size tab size
-         * @return string
-         */
-        public function get_argument($tab_size = 0)
-        {
-            $result = end_line($tab_size) . "new Message(";
-            $result .= $this->message->get_argument($tab_size + 1);
-            $result .= end_line($tab_size) . "),";
-            if ($this->use_default_keyboard === TRUE)
-                $result .= end_line($tab_size) . "TRUE";
-            elseif (isset($this->keyboard))
-                $result .= $this->keyboard->get_class($tab_size);
+    /**
+     * Return array version.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $result['message'] = $this->message->toArray();
+        if (isset($this->keyboard) && $this->keyboard->is_objective())
+            $result['keyboard'] = $this->keyboard->toArray();
+        return $result;
+    }
 
-            return $result;
-        }
+    /**
+     * Return the all arguments with formatting.
+     *
+     * @param int $tab_size tab size
+     * @return string
+     */
+    public function get_argument($tab_size = 0)
+    {
+        $result = end_line($tab_size) . "new Message(";
+        $result .= $this->message->get_argument($tab_size + 1);
+        $result .= end_line($tab_size) . "),";
+        if ($this->use_default_keyboard === TRUE)
+            $result .= end_line($tab_size) . "TRUE";
+        elseif (isset($this->keyboard))
+            $result .= $this->keyboard->get_class($tab_size);
 
-        /**
-         * Return php version of class with formatting.
-         *
-         * @param int $tab_size tab size
-         * @return string
-         */
-        public function get_class($tab_size = 0)
-        {
-            return "new Msg(" . $this->get_argument($tab_size + 1) . end_line($tab_size) . ")";
-        }
+        return $result;
+    }
+
+    /**
+     * Return php version of Provider with formatting.
+     *
+     * @param int $tab_size tab size
+     * @return string
+     */
+    public function get_class($tab_size = 0)
+    {
+        return "new Msg(" . $this->get_argument($tab_size + 1) . end_line($tab_size) . ")";
     }
 }
 
@@ -131,7 +128,7 @@ namespace kakao\Msg {
     use kakao\BaseClass;
 
     /**
-     * Message class.
+     * Message Provider.
      * For more information, visited https://github.com/plusfriend/auto_reply#62-message.
      *
      * @package kakao
@@ -161,7 +158,7 @@ namespace kakao\Msg {
         private $message_button;
 
         /**
-         * Constructor for Message class.
+         * Constructor for Message Provider.
          *
          * @param $text
          * @param array|null $photo
@@ -240,7 +237,7 @@ namespace kakao\Msg\Message {
     use kakao\BaseClass;
 
     /**
-     * Photo class.
+     * Photo Provider.
      * For more information, visited https://github.com/plusfriend/auto_reply#63-photo.
      *
      * @package kakao
@@ -268,7 +265,7 @@ namespace kakao\Msg\Message {
         private $height;
 
         /**
-         * Constructor for Photo class.
+         * Constructor for Photo Provider.
          *
          * @param array $photo
          */
@@ -326,7 +323,7 @@ namespace kakao\Msg\Message {
     }
 
     /**
-     * MessageButton class.
+     * MessageButton Provider.
      * For more information, visited https://github.com/plusfriend/auto_reply#621-messagebutton.
      *
      * @package kakao
@@ -348,7 +345,7 @@ namespace kakao\Msg\Message {
         private $url;
 
         /**
-         * Constructor for MessageButton class.
+         * Constructor for MessageButton Provider.
          *
          * @param array $message_button
          */

@@ -7,7 +7,9 @@
  * @license GPLv3
  */
 
-include_once 'lib.php';
+echo 1;
+exit;
+include_once 'Lib.php';
 
 $no = isset($_GET['no']) ? intval($_GET['no']) : 1;
 $current_url = $_SERVER['PHP_SELF'];

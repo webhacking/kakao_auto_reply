@@ -3,3 +3,5 @@ resource/msg
 .idea
 *.config.php
 sftp-config.json
+
+/vendor/

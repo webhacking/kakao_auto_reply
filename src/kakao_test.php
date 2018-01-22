@@ -7,7 +7,7 @@
  * @license GPLv3
  */
 
-include_once "lib.php";
+include_once "Lib.php";
 
 if (!is_session_start()) {
     session_start();

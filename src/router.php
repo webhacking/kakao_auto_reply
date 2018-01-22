@@ -7,24 +7,23 @@
  * @license GPLv3
  */
 
-include_once 'lib.php';
-include_once 'class/Keyboard.php';
-include_once 'class/Message.php';
+use AutoReply\Lib;
+use AutoReply\Keybord;
+use AutoReply\Message;
+
+use kakao\Msg\Mesasge;
 
 $uri = isset($_GET['id']) ? $_GET['id'] : '';
 $uri = explode('/', $uri);
 $method = $_SERVER['REQUEST_METHOD'];
 
-use kakao\Keyboard;
-use kakao\Msg;
-use kakao\Msg\Message;
 
 if ($uri[0] == '') {
     header("Location: ".BASE_URL."login.php");
     return;
 }
 
-if (!ip_check())
+if (!Lib::ip_check())
     show_error(403, "Not allowed ip!!");
 
 switch ($uri[0]) {

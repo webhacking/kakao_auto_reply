@@ -62,8 +62,8 @@ function delete_chat_room($user_key)
  */
 function msg_media_upload()
 {
-    include_once __DIR__ . '/class/Keyboard.php';
-    include_once __DIR__ . '/class/Message.php';
+    include_once __DIR__ . '/Provider/Keyboard.php';
+    include_once __DIR__ . '/Provider/Message.php';
 
     echo new \kakao\Msg(new \kakao\Msg\Message("성공적으로 업로드 했습니다."), TRUE);
 }
@@ -75,8 +75,8 @@ function msg_media_upload()
  */
 function undefined_msg_operation($content)
 {
-    include_once __DIR__ . '/class/Keyboard.php';
-    include_once __DIR__ . '/class/Message.php';
+    include_once __DIR__ . '/Provider/Keyboard.php';
+    include_once __DIR__ . '/Provider/Message.php';
 
     echo new \kakao\Msg(new \kakao\Msg\Message("Undefined operation [{$content}].\nContract to Administrator."), TRUE);
 }

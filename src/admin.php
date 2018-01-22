@@ -1,4 +1,5 @@
 <?php
+exit;
 /**
  * auto_reply
  *
@@ -6,7 +7,7 @@
  * @copyright 2016 Jang Joonho
  * @license GPLv3
  */
-include_once 'lib.php';
+include_once 'Lib.php';
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

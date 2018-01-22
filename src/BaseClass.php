@@ -7,13 +7,13 @@
  * @license GPLv3
  */
 
-namespace kakao;
+namespace AutoReply;
 
 define("SUCCESS_CODE", 200);
 define("FAILED_CODE", 400);
 
 /**
- * Base class for all created class
+ * Base Provider for all created Provider
  *
  * @package kakao
  * @author JJH
